@@ -1,7 +1,14 @@
 "use client"
 
 import { useState, useEffect } from "react"
-import { Provincia, Departamento, Localidad } from "./types"
+import { 
+  Provincia, 
+  Departamento, 
+  Localidad, 
+  tarifaBase, 
+  tarifasRutas, 
+  tiposPaquete
+} from "./types"
 
 export function useCotizador() {
   const [origen, setOrigen] = useState("")
@@ -14,7 +21,16 @@ export function useCotizador() {
   const [ancho, setAncho] = useState("")
   const [alto, setAlto] = useState("")
   const [peso, setPeso] = useState("")
+  const [cantidadBultos, setCantidadBultos] = useState("1")
   const [cotizacion, setCotizacion] = useState<number | null>(null)
+  const [detallesCotizacion, setDetallesCotizacion] = useState<{
+    subtotal: number;
+    cargoPeso: number;
+    cargoDistancia: number;
+    cargoBultos: number;
+    cargoTipoPaquete: number;
+    total: number;
+  } | null>(null)
   
   // Estados para almacenar los datos geográficos
   const [provincias, setProvincias] = useState<Provincia[]>([])
@@ -76,21 +92,85 @@ export function useCotizador() {
       })
   }, [departamento])
 
+  // Obtener el factor de distancia según origen y destino
+  const obtenerFactorDistancia = () => {
+    if (!origen || !provincia) return 1.0;
+    
+    // Buscar primero si hay una tarifa específica por departamento
+    if (departamento) {
+      const tarifaEspecifica = tarifasRutas.find(
+        tarifa => tarifa.origen === origen && 
+                 tarifa.provinciaDestino === provincia && 
+                 tarifa.departamentoDestino === departamento
+      );
+      
+      if (tarifaEspecifica) return tarifaEspecifica.factorDistancia;
+    }
+    
+    // Si no hay tarifa específica, buscar por provincia
+    const tarifaGeneral = tarifasRutas.find(
+      tarifa => tarifa.origen === origen && 
+               tarifa.provinciaDestino === provincia && 
+               !tarifa.departamentoDestino
+    );
+    
+    return tarifaGeneral?.factorDistancia || 1.5; // Factor por defecto si no se encuentra
+  }
+  
+  // Obtener el factor por tipo de paquete
+  const obtenerFactorTipoPaquete = () => {
+    if (!tipoPaquete) return 1.0;
+    
+    const tipo = tiposPaquete.find(tipo => tipo.id === tipoPaquete);
+    return tipo?.factorPrecio || 1.0;
+  }
+
   const handleCotizar = () => {
-    // Simulación de cálculo de cotización
-    // En un caso real, esto podría ser una llamada a una API
-    const largoNum = Number.parseFloat(largo) || 0
-    const anchoNum = Number.parseFloat(ancho) || 0
-    const altoNum = Number.parseFloat(alto) || 0
-    const pesoNum = Number.parseFloat(peso) || 0
-
-    // Fórmula simple para calcular el costo
-    const volumen = largoNum * anchoNum * altoNum
-    const factorDistancia = origen !== destino ? 1.5 : 1
-    const factorTipoPaquete = Number.parseInt(tipoPaquete) || 1
-
-    const costo = (volumen * 0.01 + pesoNum * 2) * factorDistancia * factorTipoPaquete
-    setCotizacion(Math.max(costo, 10)) // Mínimo $10
+    // Validar que se hayan completado los campos necesarios
+    if (!origen || !provincia || !tipoPaquete || !peso) {
+      setError("Por favor, completa los campos obligatorios: sucursal de origen, provincia de destino, tipo de paquete y peso");
+      return;
+    }
+    
+    // Convertir valores a números
+    const pesoNum = Number.parseFloat(peso) || 0;
+    const cantidadBultosNum = Number.parseInt(cantidadBultos) || 1;
+    
+    // Calcular volumen si se proporcionan dimensiones
+    const largoNum = Number.parseFloat(largo) || 0;
+    const anchoNum = Number.parseFloat(ancho) || 0;
+    const altoNum = Number.parseFloat(alto) || 0;
+    const volumen = largoNum * anchoNum * altoNum;
+    
+    // Obtener factores para el cálculo
+    const factorDistancia = obtenerFactorDistancia();
+    const factorTipoPaquete = obtenerFactorTipoPaquete();
+    
+    // Cálculo de los componentes del precio
+    const subtotal = tarifaBase.precioBase;
+    const cargoPeso = pesoNum * tarifaBase.precioPorKg;
+    const cargoDistancia = subtotal * (factorDistancia - 1); // Solo el adicional por distancia
+    const cargoBultos = Math.max(0, cantidadBultosNum - 1) * tarifaBase.precioPorBulto;
+    const cargoTipoPaquete = subtotal * (factorTipoPaquete - 1); // Solo el adicional por tipo
+    
+    // Fórmula final: factores multiplicados + adiciones
+    const total = (subtotal + cargoPeso) * factorDistancia * factorTipoPaquete + cargoBultos;
+    
+    // Guardar la cotización
+    setCotizacion(Math.max(total, tarifaBase.precioBase)); // Nunca menos que el precio base
+    
+    // Guardar detalles para mostrar desglose
+    setDetallesCotizacion({
+      subtotal,
+      cargoPeso,
+      cargoDistancia,
+      cargoBultos,
+      cargoTipoPaquete,
+      total: Math.max(total, tarifaBase.precioBase)
+    });
+    
+    // Limpiar cualquier error previo
+    setError(null);
   }
 
   return {
@@ -115,7 +195,10 @@ export function useCotizador() {
     setAlto,
     peso,
     setPeso,
+    cantidadBultos,
+    setCantidadBultos,
     cotizacion,
+    detallesCotizacion,
     
     // Datos
     provincias,
