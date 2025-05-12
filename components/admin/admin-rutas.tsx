@@ -150,7 +150,7 @@ export function AdminRutas() {
   return (
     <Card>
       <CardHeader>
-        <div className="flex justify-between items-start">
+        <div className="flex flex-col sm:flex-row justify-between items-start gap-4">
           <div>
             <CardTitle className="flex items-center gap-2">
               <MapPin className="h-5 w-5" />
@@ -161,7 +161,7 @@ export function AdminRutas() {
             </CardDescription>
           </div>
           
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-2 self-start">
             <Button
               variant="outline"
               size="sm"
@@ -198,8 +198,8 @@ export function AdminRutas() {
           {/* Formulario para agregar nueva ruta */}
           <div className="grid gap-4 py-4 border-b">
             <h3 className="font-medium">Agregar nueva ruta</h3>
-            <div className="grid grid-cols-12 gap-4 items-end">
-              <div className="col-span-12 sm:col-span-3">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-12 gap-4 items-end">
+              <div className="sm:col-span-1 lg:col-span-3">
                 <Label htmlFor="origen">Sucursal origen</Label>
                 <Select 
                   value={nuevaRuta.origen} 
@@ -216,7 +216,7 @@ export function AdminRutas() {
                 </Select>
               </div>
               
-              <div className="col-span-12 sm:col-span-3">
+              <div className="sm:col-span-1 lg:col-span-3">
                 <Label htmlFor="provincia">Provincia destino</Label>
                 <Select 
                   value={nuevaRuta.provinciaDestino} 
@@ -233,7 +233,7 @@ export function AdminRutas() {
                 </Select>
               </div>
               
-              <div className="col-span-12 sm:col-span-3">
+              <div className="sm:col-span-1 lg:col-span-3">
                 <Label htmlFor="departamento">Departamento (opcional)</Label>
                 <Input 
                   id="departamento" 
@@ -247,7 +247,7 @@ export function AdminRutas() {
                 />
               </div>
               
-              <div className="col-span-12 sm:col-span-2">
+              <div className="sm:col-span-1 lg:col-span-2">
                 <Label htmlFor="factor">Factor de distancia</Label>
                 <Input 
                   id="factor" 
@@ -264,28 +264,29 @@ export function AdminRutas() {
                 />
               </div>
               
-              <div className="col-span-12 sm:col-span-1">
+              <div className="sm:col-span-2 lg:col-span-1 flex justify-end sm:justify-start lg:justify-center">
                 <Button 
                   onClick={handleAgregarRuta}
-                  className="w-full bg-[#2C588F] hover:bg-[#2C588F]/90 h-10"
+                  className="bg-[#2C588F] hover:bg-[#2C588F]/90 h-10 w-full max-w-[120px] sm:max-w-none"
                   disabled={!nuevaRuta.origen || !nuevaRuta.provinciaDestino}
                 >
                   <Plus className="h-4 w-4" />
+                  <span className="ml-2 sm:hidden lg:inline">Agregar</span>
                 </Button>
               </div>
             </div>
           </div>
           
           {/* Tabla de rutas existentes */}
-          <div className="rounded-md border overflow-auto max-h-[500px]">
+          <div className="rounded-md border overflow-auto">
             <Table>
               <TableHeader className="sticky top-0 bg-white">
                 <TableRow className="bg-muted/50">
-                  <TableHead className="w-[200px]">Sucursal Origen</TableHead>
-                  <TableHead className="w-[200px]">Provincia Destino</TableHead>
-                  <TableHead className="w-[150px]">Departamento</TableHead>
-                  <TableHead className="w-[150px]">Factor Distancia</TableHead>
-                  <TableHead className="text-right w-[120px]">Acciones</TableHead>
+                  <TableHead className="min-w-[180px]">Sucursal Origen</TableHead>
+                  <TableHead className="min-w-[180px]">Provincia Destino</TableHead>
+                  <TableHead className="min-w-[150px]">Departamento</TableHead>
+                  <TableHead className="min-w-[150px]">Factor Distancia</TableHead>
+                  <TableHead className="text-right min-w-[100px]">Acciones</TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>

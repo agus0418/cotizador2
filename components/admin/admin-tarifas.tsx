@@ -124,18 +124,20 @@ export function AdminTarifas() {
       </CardHeader>
       <CardContent>
         <Tabs defaultValue="general" className="space-y-6">
-          <TabsList className="grid grid-cols-2 w-[400px]">
-            <TabsTrigger value="general" className="data-[state=active]:bg-[#2C588F] data-[state=active]:text-white">
-              Tarifa General
-            </TabsTrigger>
-            <TabsTrigger value="sucursales" className="data-[state=active]:bg-[#2C588F] data-[state=active]:text-white">
-              Tarifas por Sucursal
-            </TabsTrigger>
-          </TabsList>
+          <div className="w-full overflow-x-auto">
+            <TabsList className="grid grid-cols-2 w-full min-w-[300px] max-w-md">
+              <TabsTrigger value="general" className="data-[state=active]:bg-[#2C588F] data-[state=active]:text-white">
+                Tarifa General
+              </TabsTrigger>
+              <TabsTrigger value="sucursales" className="data-[state=active]:bg-[#2C588F] data-[state=active]:text-white">
+                Tarifas por Sucursal
+              </TabsTrigger>
+            </TabsList>
+          </div>
           
           {/* Tarifa base general */}
           <TabsContent value="general" className="space-y-4">
-            <div className="flex justify-between items-center">
+            <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-4">
               <h3 className="text-lg font-medium flex items-center gap-2">
                 <DollarSign className="h-5 w-5 text-[#2C588F]" />
                 Tarifa Base General
@@ -144,14 +146,14 @@ export function AdminTarifas() {
                 <Button 
                   variant="outline" 
                   size="sm"
-                  className="text-[#2C588F] border-[#2C588F]"
+                  className="text-[#2C588F] border-[#2C588F] self-start"
                   onClick={() => setEditandoTarifaBase(true)}
                 >
                   <Pencil className="h-4 w-4 mr-2" />
                   Editar
                 </Button>
               ) : (
-                <div className="flex items-center gap-2">
+                <div className="flex items-center gap-2 self-start">
                   <Button 
                     variant="outline" 
                     size="sm"
@@ -174,11 +176,11 @@ export function AdminTarifas() {
               )}
             </div>
             
-            <div className="grid gap-4 p-6 border rounded-lg bg-muted/20">
+            <div className="grid gap-4 p-4 sm:p-6 border rounded-lg bg-muted/20">
               <p className="text-sm text-muted-foreground mb-4">
                 Esta es la tarifa base que se aplica cuando no hay una tarifa específica para la sucursal.
               </p>
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
                 <div className="space-y-2">
                   <Label htmlFor="precio-base">Precio Base ($)</Label>
                   {editandoTarifaBase ? (
@@ -245,22 +247,22 @@ export function AdminTarifas() {
           
           {/* Tarifas por sucursal */}
           <TabsContent value="sucursales" className="space-y-4">
-            <div className="flex justify-between items-center">
+            <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-4">
               <h3 className="text-lg font-medium flex items-center gap-2">
                 <Building className="h-5 w-5 text-[#2C588F]" />
                 Tarifas por Sucursal
               </h3>
             </div>
             
-            <div className="rounded-md border">
+            <div className="rounded-md border overflow-x-auto">
               <Table>
                 <TableHeader>
                   <TableRow className="bg-muted/50">
-                    <TableHead className="w-[250px]">Sucursal</TableHead>
-                    <TableHead>Precio Base ($)</TableHead>
-                    <TableHead>Precio por Kg ($)</TableHead>
-                    <TableHead>Precio por Bulto ($)</TableHead>
-                    <TableHead className="text-right w-[120px]">Acciones</TableHead>
+                    <TableHead className="min-w-[150px]">Sucursal</TableHead>
+                    <TableHead className="min-w-[100px]">Precio Base ($)</TableHead>
+                    <TableHead className="min-w-[100px]">Precio/Kg ($)</TableHead>
+                    <TableHead className="min-w-[100px]">Precio/Bulto ($)</TableHead>
+                    <TableHead className="text-right min-w-[100px]">Acciones</TableHead>
                   </TableRow>
                 </TableHeader>
                 <TableBody>
@@ -280,7 +282,7 @@ export function AdminTarifas() {
                               step="10"
                               value={tarifa.precioBase}
                               onChange={(e) => handleEditarTarifaSucursal(tarifa.sucursalId, "precioBase", e.target.value)}
-                              className="h-8 min-h-8"
+                              className="h-8 min-h-8 w-full"
                             />
                           ) : (
                             <span className="font-semibold">${tarifa.precioBase.toFixed(2)}</span>
@@ -294,7 +296,7 @@ export function AdminTarifas() {
                               step="5"
                               value={tarifa.precioPorKg}
                               onChange={(e) => handleEditarTarifaSucursal(tarifa.sucursalId, "precioPorKg", e.target.value)}
-                              className="h-8 min-h-8"
+                              className="h-8 min-h-8 w-full"
                             />
                           ) : (
                             <span className="font-semibold">${tarifa.precioPorKg.toFixed(2)}</span>
@@ -308,7 +310,7 @@ export function AdminTarifas() {
                               step="5"
                               value={tarifa.precioPorBulto}
                               onChange={(e) => handleEditarTarifaSucursal(tarifa.sucursalId, "precioPorBulto", e.target.value)}
-                              className="h-8 min-h-8"
+                              className="h-8 min-h-8 w-full"
                             />
                           ) : (
                             <span className="font-semibold">${tarifa.precioPorBulto.toFixed(2)}</span>

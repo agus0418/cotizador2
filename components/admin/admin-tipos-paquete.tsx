@@ -98,8 +98,8 @@ export function AdminTiposPaquete() {
           {/* Formulario para agregar nuevo tipo */}
           <div className="grid gap-4 py-4 border-b">
             <h3 className="font-medium">Agregar nuevo tipo de paquete</h3>
-            <div className="grid grid-cols-12 gap-4 items-end">
-              <div className="col-span-12 sm:col-span-2">
+            <div className="grid grid-cols-1 sm:grid-cols-12 gap-4 items-end">
+              <div className="sm:col-span-2">
                 <Label htmlFor="tipo-id">ID</Label>
                 <Input 
                   id="tipo-id" 
@@ -108,7 +108,7 @@ export function AdminTiposPaquete() {
                   placeholder="ID único"
                 />
               </div>
-              <div className="col-span-12 sm:col-span-6">
+              <div className="sm:col-span-6">
                 <Label htmlFor="tipo-nombre">Nombre</Label>
                 <Input 
                   id="tipo-nombre" 
@@ -117,7 +117,7 @@ export function AdminTiposPaquete() {
                   placeholder="Nombre del tipo de paquete"
                 />
               </div>
-              <div className="col-span-12 sm:col-span-2">
+              <div className="sm:col-span-2">
                 <Label htmlFor="tipo-factor">Factor Precio</Label>
                 <Input 
                   id="tipo-factor" 
@@ -129,10 +129,10 @@ export function AdminTiposPaquete() {
                   placeholder="Factor multiplicador"
                 />
               </div>
-              <div className="col-span-12 sm:col-span-2">
+              <div className="sm:col-span-2 flex justify-end sm:justify-start">
                 <Button 
                   onClick={handleAgregarTipo}
-                  className="w-full bg-[#2C588F] hover:bg-[#2C588F]/90"
+                  className="bg-[#2C588F] hover:bg-[#2C588F]/90 w-full max-w-[120px] sm:max-w-none"
                   disabled={!nuevoTipo.id || !nuevoTipo.nombre}
                 >
                   <Plus className="h-4 w-4 mr-2" />
@@ -143,14 +143,14 @@ export function AdminTiposPaquete() {
           </div>
           
           {/* Tabla de tipos existentes */}
-          <div className="rounded-md border">
+          <div className="rounded-md border overflow-x-auto">
             <Table>
               <TableHeader>
                 <TableRow className="bg-muted/50">
-                  <TableHead className="w-[80px]">ID</TableHead>
-                  <TableHead>Nombre</TableHead>
-                  <TableHead className="w-[150px]">Factor de Precio</TableHead>
-                  <TableHead className="text-right w-[120px]">Acciones</TableHead>
+                  <TableHead className="min-w-[80px]">ID</TableHead>
+                  <TableHead className="min-w-[180px]">Nombre</TableHead>
+                  <TableHead className="min-w-[120px]">Factor de Precio</TableHead>
+                  <TableHead className="text-right min-w-[120px]">Acciones</TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
@@ -161,7 +161,7 @@ export function AdminTiposPaquete() {
                         <Input 
                           value={tipo.id}
                           onChange={(e) => handleEditarTipo(tipo.id, "id", e.target.value)}
-                          className="h-8 min-h-8"
+                          className="h-8 min-h-8 w-full"
                         />
                       ) : (
                         tipo.id
@@ -172,7 +172,7 @@ export function AdminTiposPaquete() {
                         <Input 
                           value={tipo.nombre}
                           onChange={(e) => handleEditarTipo(tipo.id, "nombre", e.target.value)}
-                          className="h-8 min-h-8"
+                          className="h-8 min-h-8 w-full"
                         />
                       ) : (
                         tipo.nombre
@@ -186,7 +186,7 @@ export function AdminTiposPaquete() {
                           step="0.1"
                           value={tipo.factorPrecio}
                           onChange={(e) => handleEditarTipo(tipo.id, "factorPrecio", parseFloat(e.target.value))}
-                          className="h-8 min-h-8"
+                          className="h-8 min-h-8 w-full"
                         />
                       ) : (
                         <span className="bg-blue-50 text-blue-700 px-2 py-1 rounded text-xs font-medium">

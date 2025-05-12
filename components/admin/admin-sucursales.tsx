@@ -95,8 +95,8 @@ export function AdminSucursales() {
           {/* Formulario para agregar nueva sucursal */}
           <div className="grid gap-4 py-4 border-b">
             <h3 className="font-medium">Agregar nueva sucursal</h3>
-            <div className="grid grid-cols-12 gap-4 items-end">
-              <div className="col-span-12 sm:col-span-3">
+            <div className="grid grid-cols-1 sm:grid-cols-12 gap-4 items-end">
+              <div className="sm:col-span-3">
                 <Label htmlFor="sucursal-id">ID</Label>
                 <Input 
                   id="sucursal-id" 
@@ -105,7 +105,7 @@ export function AdminSucursales() {
                   placeholder="ID único"
                 />
               </div>
-              <div className="col-span-12 sm:col-span-7">
+              <div className="sm:col-span-7">
                 <Label htmlFor="sucursal-nombre">Nombre</Label>
                 <Input 
                   id="sucursal-nombre" 
@@ -114,10 +114,10 @@ export function AdminSucursales() {
                   placeholder="Nombre de la sucursal"
                 />
               </div>
-              <div className="col-span-12 sm:col-span-2">
+              <div className="sm:col-span-2 flex justify-end sm:justify-start">
                 <Button 
                   onClick={handleAgregarSucursal}
-                  className="w-full bg-[#2C588F] hover:bg-[#2C588F]/90"
+                  className="bg-[#2C588F] hover:bg-[#2C588F]/90 w-full max-w-[120px] sm:max-w-none"
                   disabled={!nuevaSucursal.id || !nuevaSucursal.nombre}
                 >
                   <Plus className="h-4 w-4 mr-2" />
@@ -128,13 +128,13 @@ export function AdminSucursales() {
           </div>
           
           {/* Tabla de sucursales existentes */}
-          <div className="rounded-md border">
+          <div className="rounded-md border overflow-x-auto">
             <Table>
               <TableHeader>
                 <TableRow className="bg-muted/50">
-                  <TableHead className="w-[100px]">ID</TableHead>
-                  <TableHead>Nombre</TableHead>
-                  <TableHead className="text-right w-[120px]">Acciones</TableHead>
+                  <TableHead className="min-w-[100px]">ID</TableHead>
+                  <TableHead className="min-w-[200px]">Nombre</TableHead>
+                  <TableHead className="text-right min-w-[120px]">Acciones</TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
@@ -145,7 +145,7 @@ export function AdminSucursales() {
                         <Input 
                           value={sucursal.id}
                           onChange={(e) => handleEditarSucursal(sucursal.id, "id", e.target.value)}
-                          className="h-8 min-h-8"
+                          className="h-8 min-h-8 w-full"
                         />
                       ) : (
                         sucursal.id
@@ -156,7 +156,7 @@ export function AdminSucursales() {
                         <Input 
                           value={sucursal.nombre}
                           onChange={(e) => handleEditarSucursal(sucursal.id, "nombre", e.target.value)}
-                          className="h-8 min-h-8"
+                          className="h-8 min-h-8 w-full"
                         />
                       ) : (
                         sucursal.nombre
