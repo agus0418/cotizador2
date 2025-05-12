@@ -81,28 +81,28 @@ export function Cotizador() {
         {/* Indicador de progreso */}
         <div className="flex items-center justify-between mt-4 px-2">
           <div className="flex flex-col items-center">
-            <div className={`w-10 h-10 rounded-full flex items-center justify-center ${paso >= 1 ? 'bg-primary text-white' : 'bg-muted'}`}>
+            <div className={`w-10 h-10 rounded-full flex items-center justify-center ${paso >= 1 ? 'bg-[#2C588F] text-white' : 'bg-muted'}`}>
               <Truck className="w-5 h-5" />
             </div>
-            <span className={`text-xs mt-1 ${paso >= 1 ? 'text-primary font-medium' : 'text-muted-foreground'}`}>Origen</span>
+            <span className={`text-xs mt-1 ${paso >= 1 ? 'text-[#2C588F] font-medium' : 'text-muted-foreground'}`}>Origen</span>
           </div>
           
-          <div className={`h-0.5 flex-1 mx-2 ${paso >= 2 ? 'bg-primary' : 'bg-muted'}`} />
+          <div className={`h-0.5 flex-1 mx-2 ${paso >= 2 ? 'bg-[#2C588F]' : 'bg-muted'}`} />
           
           <div className="flex flex-col items-center">
-            <div className={`w-10 h-10 rounded-full flex items-center justify-center ${paso >= 2 ? 'bg-primary text-white' : 'bg-muted'}`}>
+            <div className={`w-10 h-10 rounded-full flex items-center justify-center ${paso >= 2 ? 'bg-[#2C588F] text-white' : 'bg-muted'}`}>
               <Package className="w-5 h-5" />
             </div>
-            <span className={`text-xs mt-1 ${paso >= 2 ? 'text-primary font-medium' : 'text-muted-foreground'}`}>Paquete</span>
+            <span className={`text-xs mt-1 ${paso >= 2 ? 'text-[#2C588F] font-medium' : 'text-muted-foreground'}`}>Paquete</span>
           </div>
           
-          <div className={`h-0.5 flex-1 mx-2 ${paso >= 3 ? 'bg-primary' : 'bg-muted'}`} />
+          <div className={`h-0.5 flex-1 mx-2 ${paso >= 3 ? 'bg-[#2C588F]' : 'bg-muted'}`} />
           
           <div className="flex flex-col items-center">
-            <div className={`w-10 h-10 rounded-full flex items-center justify-center ${paso >= 3 ? 'bg-primary text-white' : 'bg-muted'}`}>
+            <div className={`w-10 h-10 rounded-full flex items-center justify-center ${paso >= 3 ? 'bg-[#2C588F] text-white' : 'bg-muted'}`}>
               <Calculator className="w-5 h-5" />
             </div>
-            <span className={`text-xs mt-1 ${paso >= 3 ? 'text-primary font-medium' : 'text-muted-foreground'}`}>Resultado</span>
+            <span className={`text-xs mt-1 ${paso >= 3 ? 'text-[#2C588F] font-medium' : 'text-muted-foreground'}`}>Resultado</span>
           </div>
         </div>
       </CardHeader>
@@ -218,7 +218,7 @@ export function Cotizador() {
               <Button 
                 onClick={avanzarPaso} 
                 disabled={!puedeAvanzarPaso1}
-                className="bg-primary hover:bg-primary/90 rounded-lg h-11 text-base font-medium transition-all hover:shadow-md flex items-center justify-center gap-2"
+                className="bg-[#2C588F] hover:bg-[#2C588F]/90 rounded-lg h-11 text-base font-medium transition-all hover:shadow-md flex items-center justify-center gap-2"
               >
                 Continuar
                 <ArrowRight className="w-5 h-5" />
@@ -339,7 +339,7 @@ export function Cotizador() {
               <Button 
                 onClick={retrocederPaso} 
                 variant="outline"
-                className="rounded-lg h-11 text-base font-medium transition-all hover:shadow-md flex items-center justify-center gap-2"
+                className="rounded-lg h-11 text-base font-medium transition-all hover:shadow-md flex items-center justify-center gap-2 text-[#2C588F] border-[#2C588F] hover:bg-[#2C588F]/10"
               >
                 <ArrowLeft className="w-5 h-5" />
                 Volver
@@ -348,7 +348,7 @@ export function Cotizador() {
               <Button 
                 onClick={avanzarPaso} 
                 disabled={!puedeAvanzarPaso2}
-                className="bg-primary hover:bg-primary/90 rounded-lg h-11 text-base font-medium transition-all hover:shadow-md flex items-center justify-center gap-2"
+                className="bg-[#2C588F] hover:bg-[#2C588F]/90 rounded-lg h-11 text-base font-medium transition-all hover:shadow-md flex items-center justify-center gap-2"
               >
                 Cotizar ahora
                 <Calculator className="w-5 h-5" />
@@ -485,7 +485,7 @@ export function Cotizador() {
               <Button 
                 onClick={retrocederPaso} 
                 variant="outline"
-                className="rounded-lg h-11 text-base font-medium transition-all hover:shadow-md flex items-center justify-center gap-2"
+                className="rounded-lg h-11 text-base font-medium transition-all hover:shadow-md flex items-center justify-center gap-2 text-[#2C588F] border-[#2C588F] hover:bg-[#2C588F]/10"
               >
                 <ArrowLeft className="w-5 h-5" />
                 Volver
@@ -493,7 +493,7 @@ export function Cotizador() {
               
               <Button 
                 onClick={nuevaCotizacion}
-                className="bg-primary hover:bg-primary/90 rounded-lg h-11 text-base font-medium transition-all hover:shadow-md flex items-center justify-center gap-2"
+                className="bg-[#2C588F] hover:bg-[#2C588F]/90 rounded-lg h-11 text-base font-medium transition-all hover:shadow-md flex items-center justify-center gap-2"
               >
                 Nueva cotización
                 <Truck className="w-5 h-5" />
