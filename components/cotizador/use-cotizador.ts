@@ -6,6 +6,7 @@ import {
   Departamento, 
   Localidad, 
   tarifaBase, 
+  tarifasBaseSucursal,
   tarifasRutas, 
   tiposPaquete
 } from "./types"
@@ -92,6 +93,17 @@ export function useCotizador() {
       })
   }, [departamento])
 
+  // Obtener la tarifa base para la sucursal seleccionada
+  const obtenerTarifaBaseSucursal = () => {
+    if (!origen) return tarifaBase;
+    
+    const tarifaSucursal = tarifasBaseSucursal.find(
+      tarifa => tarifa.sucursalId === origen
+    );
+    
+    return tarifaSucursal || tarifaBase;
+  }
+
   // Obtener el factor de distancia según origen y destino
   const obtenerFactorDistancia = () => {
     if (!origen || !provincia) return 1.0;
@@ -132,6 +144,9 @@ export function useCotizador() {
       return;
     }
     
+    // Obtener la tarifa base específica para la sucursal seleccionada
+    const tarifaSucursal = obtenerTarifaBaseSucursal();
+    
     // Convertir valores a números
     const pesoNum = Number.parseFloat(peso) || 0;
     const cantidadBultosNum = Number.parseInt(cantidadBultos) || 1;
@@ -146,18 +161,18 @@ export function useCotizador() {
     const factorDistancia = obtenerFactorDistancia();
     const factorTipoPaquete = obtenerFactorTipoPaquete();
     
-    // Cálculo de los componentes del precio
-    const subtotal = tarifaBase.precioBase;
-    const cargoPeso = pesoNum * tarifaBase.precioPorKg;
+    // Cálculo de los componentes del precio usando la tarifa específica de la sucursal
+    const subtotal = tarifaSucursal.precioBase;
+    const cargoPeso = pesoNum * tarifaSucursal.precioPorKg;
     const cargoDistancia = subtotal * (factorDistancia - 1); // Solo el adicional por distancia
-    const cargoBultos = Math.max(0, cantidadBultosNum - 1) * tarifaBase.precioPorBulto;
+    const cargoBultos = Math.max(0, cantidadBultosNum - 1) * tarifaSucursal.precioPorBulto;
     const cargoTipoPaquete = subtotal * (factorTipoPaquete - 1); // Solo el adicional por tipo
     
     // Fórmula final: factores multiplicados + adiciones
     const total = (subtotal + cargoPeso) * factorDistancia * factorTipoPaquete + cargoBultos;
     
     // Guardar la cotización
-    setCotizacion(Math.max(total, tarifaBase.precioBase)); // Nunca menos que el precio base
+    setCotizacion(Math.max(total, tarifaSucursal.precioBase)); // Nunca menos que el precio base
     
     // Guardar detalles para mostrar desglose
     setDetallesCotizacion({
@@ -166,7 +181,7 @@ export function useCotizador() {
       cargoDistancia,
       cargoBultos,
       cargoTipoPaquete,
-      total: Math.max(total, tarifaBase.precioBase)
+      total: Math.max(total, tarifaSucursal.precioBase)
     });
     
     // Limpiar cualquier error previo
